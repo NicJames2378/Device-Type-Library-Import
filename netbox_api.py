@@ -228,7 +228,7 @@ class NetBox:
                             self.counter.update({'module_added': 1})
                             self.handle.verbose_log(f'Module Type Created: {module_type_res.manufacturer.name} - {module_type_res.model} - {module_type_res.id}')
                         except pynetbox.RequestError as exce:
-                            self.handle.log(f"Error '{exce.error}' creating module type: {curr_mt['manufacturer']} {curr_mt['model']} {curr_mt['part_number']}")
+                            self.handle.log(f"Error creating module type: {curr_mt['manufacturer']} {curr_mt['model']} {curr_mt.get("part_number", "")} - '{exce.error}'")
                             retries += 1
                             continue
 
@@ -314,7 +314,7 @@ class DeviceTypes:
                                          self.netbox.dcim.interface_templates.create(to_create), "Interface")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Interface")
+                self.handle.log(f"Error creating Interface - '{excep.error}'")
 
     def create_power_ports(self, power_ports, device_type):
         existing_power_ports = self.get_power_ports(device_type)
@@ -327,7 +327,7 @@ class DeviceTypes:
                                          self.netbox.dcim.power_port_templates.create(to_create), "Power Port")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Power Port")
+                self.handle.log(f"Error creating Power Port - '{excep.error}'")
 
     def create_console_ports(self, console_ports, device_type):
         existing_console_ports = {str(item): item for item in self.netbox.dcim.console_port_templates.filter(**{'device_type_id' if self.new_filters else 'devicetype_id': device_type})}
@@ -340,7 +340,7 @@ class DeviceTypes:
                                          self.netbox.dcim.console_port_templates.create(to_create), "Console Port")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Console Port")
+                self.handle.log(f"Error creating Console Port - '{excep.error}'")
 
     def create_power_outlets(self, power_outlets, device_type):
         existing_power_outlets = {str(item): item for item in self.netbox.dcim.power_outlet_templates.filter(**{'device_type_id' if self.new_filters else 'devicetype_id': device_type})}
@@ -375,7 +375,7 @@ class DeviceTypes:
                                          self.netbox.dcim.console_server_port_templates.create(to_create), "Console Server Port")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Console Server Port")
+                self.handle.log(f"Error creating Console Server Port - '{excep.error}'")
 
     def create_rear_ports(self, rear_ports, device_type):
         existing_rear_ports = self.get_rear_ports(device_type)
@@ -388,7 +388,7 @@ class DeviceTypes:
                                          self.netbox.dcim.rear_port_templates.create(to_create), "Rear Port")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Rear Port")
+                self.handle.log(f"Error creating Rear Port - '{excep.error}'")
 
     def create_front_ports(self, front_ports, device_type):
         existing_front_ports = {str(item): item for item in self.netbox.dcim.front_port_templates.filter(**{'device_type_id' if self.new_filters else 'devicetype_id': device_type})}
@@ -410,7 +410,7 @@ class DeviceTypes:
                                          self.netbox.dcim.front_port_templates.create(to_create), "Front Port")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Front Port")
+                self.handle.log(f"Error creating Front Port - '{excep.error}'")
 
     def create_device_bays(self, device_bays, device_type):
         existing_device_bays = {str(item): item for item in self.netbox.dcim.device_bay_templates.filter(**{'device_type_id' if self.new_filters else 'devicetype_id': device_type})}
@@ -423,7 +423,7 @@ class DeviceTypes:
                                          self.netbox.dcim.device_bay_templates.create(to_create), "Device Bay")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Device Bay")
+                self.handle.log(f"Error creating Device Bay - '{excep.error}'")
 
     def create_module_bays(self, module_bays, device_type):
         existing_module_bays = {str(item): item for item in self.netbox.dcim.module_bay_templates.filter(**{'device_type_id' if self.new_filters else 'devicetype_id': device_type})}
@@ -436,7 +436,7 @@ class DeviceTypes:
                                          self.netbox.dcim.module_bay_templates.create(to_create), "Module Bay")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Module Bay")
+                self.handle.log(f"Error creating Module Bay - '{excep.error}'")
 
     def create_module_interfaces(self, module_interfaces, module_type):
         existing_interfaces = {str(item): item for item in self.netbox.dcim.interface_templates.filter(**{'module_type_id' if self.new_filters else 'moduletype_id': module_type})}
@@ -449,7 +449,7 @@ class DeviceTypes:
                                          self.netbox.dcim.interface_templates.create(to_create), "Module Interface")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Module Interface")
+                self.handle.log(f"Error creating Module Interface - '{excep.error}'")
 
     def create_module_power_ports(self, power_ports, module_type):
         existing_power_ports = self.get_module_power_ports(module_type)
@@ -462,7 +462,7 @@ class DeviceTypes:
                                          self.netbox.dcim.power_port_templates.create(to_create), "Module Power Port")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Module Power Port")
+                self.handle.log(f"Error creating Module Power Port - '{excep.error}'")
 
     def create_module_console_ports(self, console_ports, module_type):
         existing_console_ports = {str(item): item for item in self.netbox.dcim.console_port_templates.filter(**{'module_type_id' if self.new_filters else 'moduletype_id': module_type})}
@@ -475,7 +475,7 @@ class DeviceTypes:
                                          self.netbox.dcim.console_port_templates.create(to_create), "Module Console Port")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Module Console Port")
+                self.handle.log(f"Error creating Module Console Port - '{excep.error}'")
 
     def create_module_power_outlets(self, power_outlets, module_type):
         existing_power_outlets = {str(item): item for item in self.netbox.dcim.power_outlet_templates.filter(**{'module_type_id' if self.new_filters else 'moduletype_id': module_type})}
@@ -496,7 +496,7 @@ class DeviceTypes:
                                          self.netbox.dcim.power_outlet_templates.create(to_create), "Module Power Outlet")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Module Power Outlet")
+                self.handle.log(f"Error creating Module Power Outlet - '{excep.error}'")
 
     def create_module_console_server_ports(self, console_server_ports, module_type):
         existing_console_server_ports = {str(item): item for item in self.netbox.dcim.console_server_port_templates.filter(**{'module_type_id' if self.new_filters else 'moduletype_id': module_type})}
@@ -509,7 +509,7 @@ class DeviceTypes:
                                          self.netbox.dcim.console_server_port_templates.create(to_create), "Module Console Server Port")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Module Console Server Port")
+                self.handle.log(f"Error creating Module Console Server Port - '{excep.error}'")
 
     def create_module_rear_ports(self, rear_ports, module_type):
         existing_rear_ports = self.get_module_rear_ports(module_type)
@@ -522,7 +522,7 @@ class DeviceTypes:
                                          self.netbox.dcim.rear_port_templates.create(to_create), "Module Rear Port")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Module Rear Port")
+                self.handle.log(f"Error creating Module Rear Port - '{excep.error}'")
 
     def create_module_front_ports(self, front_ports, module_type):
         existing_front_ports = {str(item): item for item in self.netbox.dcim.front_port_templates.filter(**{'module_type_id' if self.new_filters else 'moduletype_id': module_type})}
@@ -544,7 +544,7 @@ class DeviceTypes:
                                          self.netbox.dcim.front_port_templates.create(to_create), "Module Front Port")
                                      })
             except pynetbox.RequestError as excep:
-                self.handle.log(f"Error '{excep.error}' creating Module Front Port")
+                self.handle.log(f"Error creating Module Front Port - '{excep.error}'")
 
     def upload_images(self,baseurl,token,images,device_type):
         '''Upload front_image and/or rear_image for the given device type
